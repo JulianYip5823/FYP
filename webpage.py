@@ -10,7 +10,7 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer
 # SETUP
 st.set_page_config(page_title="Airline Sentiment AI", layout="centered")
 
-# Download VADER lexicon (Running this check prevents errors on first run)
+# Download VADER lexicon 
 try:
     nltk.data.find('sentiment/vader_lexicon.zip')
 except LookupError:
