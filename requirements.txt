@@ -1,0 +1,21 @@
+# Data Manipulation
+pandas
+numpy
+
+# Natural Language Processing
+nltk
+spacy
+vaderSentiment
+
+# Machine Learning
+scikit-learn
+imbalanced-learn
+
+# Explainable AI & UI
+lime
+streamlit
+joblib
+
+# Visualization
+matplotlib
+seaborn
