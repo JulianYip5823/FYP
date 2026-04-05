@@ -3,8 +3,8 @@ A hybrid machine learning and sentiment analysis framework to forecast passenger
 
 ## Project Overview
 - **Objective**: To develop a predictive framework that integrates textual sentiment scores with structured flight data to accurately forecast passenger satisfaction and identify critical service failure points.
-- **Problem Statement**: Traditional sentiment analysis often fails to comprehend modern human language nuances, including mixed emotions and sarcasm, leading to a gap between numerical ratings and actual customer sentiment.
-- **Key Contribution**: Implementation of an Explainable AI (XAI) dashboard that visualizes specific word contributions to each prediction, bridging the transparency gap in "black-box" models.
+- **Problem Statement**: Traditional sentiment analysis often fails to comprehend modern human language, including mixed emotions and sarcasm, leading to a gap between numerical ratings and actual customer sentiment.
+- **Key Contributions**: Implementation of an Explainable AI (XAI) dashboard that visualizes specific word contributions to each prediction, bridging the transparency gap in "black-box" models.
 
 ## Tech Stack
 - **Language**: Python 3.11.3
@@ -19,11 +19,11 @@ A hybrid machine learning and sentiment analysis framework to forecast passenger
 
 ## Methodology (CRISP-DM)
 1. **Data Preprocessing**: Standardized attribute names, handled missing values, and normalized rating scales (1-5, 1-10) to a uniform 0-5 scale
-2. **Exploratory Text Analysis**: Utilized Word Clouds and N-gram frequency analysis to identify recurring feedback patterns like service quality and seat comfort
+2. **Exploratory Text Analysis**: Utilized Word Clouds and N-gram frequency analysis to identify the common words/phrases that carry weight/feature. 
 3. **Feature Engineering**:
     - **Sentiment Scoring**: Generated Document-Level scores (Pos, Neg, Neu, Compound) using VADER
-    - **Text Vectorization**: Converted text to numerical format using TF-IDF for trigrams
-    - **Class Balancing**: Applied SMOTE to address the target class imbalance (majority "Not Recommended")
+    - **Text Vectorization**: Converted text to numerical format using TF-IDF for bigrams/trigrams
+    - **Class Balancing**: Applied SMOTE to address the target variable class imbalance (majority "Not Recommended")
 4. **Modeling & Evaluation**: Evaluated Logistic Regression, Random Forest, Linear SVC, and SGD Classifier
 5. **Deployment**: Developed an interactive web app for real-time sentiment prediction and XAI visualization
 
@@ -31,7 +31,6 @@ A hybrid machine learning and sentiment analysis framework to forecast passenger
 The project evaluation was split into two phases: establishing a baseline with **Manual Tuning** and optimizing performance via **Automated Hyperparameter Tuning**
 
 ### 1. Base Models (Manual Tuning)
-*Parameters were manually selected based on the CRISP-DM framework to establish initial performance benchmarks.*
 
 | Model | Accuracy | Precision | Recall | F1-Score |
 | :--- | :--- | :--- | :--- | :--- |
@@ -50,17 +49,29 @@ The project evaluation was split into two phases: establishing a baseline with *
 | Random Forest | 75.45% | 44.03% | 54.37% | 0.4866 |
 | Linear SVC | 56.34% | 32.51% | 92.52% | 0.4811 |
 
-### 🔍 Key Evaluation Summary
-- **Champion Model:** The **Tuned Logistic Regression** was selected for deployment. While Linear SVC achieved a higher recall (92.52%), its accuracy drop to 56.34% indicated instability and a high rate of False Positives.
-- **Tuning Impact:** Hyperparameter tuning improved the Logistic Regression model's ability to correctly identify an additional **62 recommendations** compared to the base version, significantly reducing the "missed" positive feedback.
+### Key Evaluation Summary
+- **Model Selection**: The **Tuned Logistic Regression** was selected for deployment. Although the Linear SVC model showed a higher recall (92.52%), its significantly lower accuracy (56.34%) suggested instability and an unacceptable rate of False Positives.
+- **Optimization Results**: Hyperparameter tuning enhanced the Logistic Regression model’s performance, correctly identifying 62 additional recommendations compared to the baseline version. This improvement effectively reduced the number of missed positive feedback instances.
+
+### Model Performance Logic
+The following metrics were used to evaluate the model's effectiveness in identifying customer sentiment:
+
+| Metric | Logic & Purpose |
+| :--- | :--- |
+| **Accuracy** | The percentage of overall correct predictions. |
+| **Precision** | Measures the accuracy of "Negative" predictions to reduce False Positives. |
+| **Recall** | Measures the ability to find all actual "Negative" feedback to minimize False Negatives. |
+| **F1-Score** | The balance between Precision and Recall. |
+
+Therefore, the goal is to maximize True Positives (TP) to ensure high Recall, as overlooking customer complaints is a risk. However, the high Recall could lead to more False Positives (FP), tuning procedures were implemented to keep False Positives (FP) as low as possible to ensure Precision remains stable. 
 
 ## Strengths & Limitations
 1. **Pros**:
-   - **Interpretability**: Unlike "black-box" models, this framework explains why a review was classified as negative
-   - **Low Latency**: Optimized for real-time prediction on standard hardware
+   - **Interpretability**: By implementing XAI, the framework provides clear reasoning for why a specific review is classified as negative, making the results easier to validate than "black-box" models.
+   - Efficiency: The system is optimized for low-latency performance, allowing for real-time predictions without requiring high-end hardware.
 2. **Cons**:
-   - **Domain Specificity**: Trained specifically on airline vocabulary; requires retraining for other industries (e.g., hotels)
-   - **Sarcasm Detection**: Lexicon-based approaches (VADER) occasionally struggle with highly sarcastic textual data
+   - **Domain Specificity**: The model is trained specifically on airline industry vocabulary. Applying this system to other domains (such as hospitality) would require retraining on a new dataset. (e.g., hotels)
+   - **Sarcasm Detection Challenges**: Lexicon-based tools like VADER may struggle with detecting sarcasm, which can impact sentiment accuracy in highly informal textual data.
 
 ## Repository Structure
 
